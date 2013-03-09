@@ -1,0 +1,3 @@
+Insert into PRUEBAS.SDS_ORDEN_PRORIDAD_OPA (OPA_CODIGO,OPA_NOMBRE) values ('1','baja');
+Insert into PRUEBAS.SDS_ORDEN_PRORIDAD_OPA (OPA_CODIGO,OPA_NOMBRE) values ('2','media');
+Insert into PRUEBAS.SDS_ORDEN_PRORIDAD_OPA (OPA_CODIGO,OPA_NOMBRE) values ('3','alta');

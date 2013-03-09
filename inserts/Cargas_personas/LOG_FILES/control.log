@@ -1,0 +1,33 @@
+
+SQL*Loader: Release 10.2.0.1.0 - Production on Sáb Mar 9 11:12:44 2013
+
+Copyright (c) 1982, 2005, Oracle.  All rights reserved.
+
+Archivo de Control:   Control.ctl
+Archivo de Datos:      personas_comas.csv
+  Archivo de Errores:     personas_comas.bad
+  Desechar Archivo:  ninguno especificado
+ 
+ (Permitir todos los registros desechados)
+
+Número a cargar: ALL
+Número a ignorar: 1
+Errores permitidos: 50
+Matriz de enlace:     64 filas, máximo de 256000 bytes
+Continuación:    ninguno especificado
+Ruta de acceso utilizada:      Convencional
+
+Tabla PERSONAS, cargada de cada registro lógico.
+Opción INSERT activa para esta tabla: APPEND
+
+   Nombre Columna               Posición   Long  Term Entorno Tipo de Dato
+------------------------------ ---------- ----- ---- ---- ---------------------
+NACIONALIDAD                        FIRST     *   ,       CHARACTER            
+CEDULA                               NEXT     *   ,       CHARACTER            
+SEXO                                 NEXT     *   ,       CHARACTER            
+NOMBRE                               NEXT     *   ,       CHARACTER            
+APELLIDO                             NEXT     *   ,       CHARACTER            
+
+SQL*Loader-941: Error al describir la tabla PERSONAS
+ORA-04043: el objeto PERSONAS no existe
+
