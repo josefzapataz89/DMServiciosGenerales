@@ -1,0 +1,8 @@
+insert into sds_edificios_edo(edo_codigo, edo_nombre) values (1, 'A');
+insert into sds_edificios_edo(edo_codigo, edo_nombre) values (2, 'B');
+insert into sds_edificios_edo(edo_codigo, edo_nombre) values (3, 'BIBLIOTECA');
+insert into sds_edificios_edo(edo_codigo, edo_nombre) values (4, 'Administrativo');
+insert into sds_edificios_edo(edo_codigo, edo_nombre) values (5, 'C');
+insert into sds_edificios_edo(edo_codigo, edo_nombre) values (6, 'D');
+insert into sds_edificios_edo(edo_codigo, edo_nombre) values (7, 'LAB');
+insert into sds_edificios_edo(edo_codigo, edo_nombre) values (8, 'INSTALACIONES DEPORTIVAS');
