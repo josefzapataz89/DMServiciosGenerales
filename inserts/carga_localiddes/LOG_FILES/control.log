@@ -1,0 +1,60 @@
+
+SQL*Loader: Release 10.2.0.1.0 - Production on Sáb Mar 9 12:13:10 2013
+
+Copyright (c) 1982, 2005, Oracle.  All rights reserved.
+
+Archivo de Control:   Control.ctl
+Archivo de Datos:      sds_localidades_lcd_data_table.ldr
+  Cadena de caracteres de la opción de procesamiento de archivos: "str '\r\n'"
+  Archivo de Errores:     sds_localidades_lcd_data_table.bad
+  Desechar Archivo:  ninguno especificado
+ 
+ (Permitir todos los registros desechados)
+
+Número a cargar: ALL
+Número a ignorar: 0
+Errores permitidos: 50
+Matriz de enlace:     64 filas, máximo de 256000 bytes
+Continuación:   1:1 = 0X23(carácter '#'), en el siguiente registro físico
+Ruta de acceso utilizada:      Convencional
+
+Tabla "PRUEBAS"."SDS_LOCALIDADES_LCD", cargada de cada registro lógico.
+Opción INSERT activa para esta tabla: INSERT
+Opción TRAILING NULLCOLS activada
+
+   Nombre Columna               Posición   Long  Term Entorno Tipo de Dato
+------------------------------ ---------- ----- ---- ---- ---------------------
+"LCD_CODIGO"                        FIRST     *   |  O(") CHARACTER            
+                                                      O(")
+"CTR_ANO_FISCAL"                     NEXT     *   |  O(") CHARACTER            
+                                                      O(")
+"CTR_ID_CENTRO"                      NEXT     *   |  O(") CHARACTER            
+                                                      O(")
+"PSO_CODIGO"                         NEXT     *   |  O(") CHARACTER            
+                                                      O(")
+"EDO_CODIGO"                         NEXT     *   |  O(") CHARACTER            
+                                                      O(")
+"LCD_NOMBRE"                         NEXT     *   |  O(") CHARACTER            
+                                                      O(")
+
+
+Tabla "PRUEBAS"."SDS_LOCALIDADES_LCD":
+  2999 Filas se ha cargado correctamente.
+  0 Filas no cargada debido a errores de datos.
+  0 Filas no cargada porque todas las cláusulas WHEN han fallado.
+  0 Filas no cargada porque todos los campos eran nulos.
+
+
+Espacio asignado a matriz de enlace:            99072 bytes (64 filas)
+Bytes de buffer de lectura: 1048576
+
+Total de registros lógicos ignorados:          0
+Total de registros lógicos leídos:        2999
+Total de registros lógicos rechazados:         0
+Total de registros lógicos desechados:        0
+
+La ejecución empezó en Sáb Mar 09 12:13:10 2013
+La ejecución terminó en Sáb Mar 09 12:13:25 2013
+
+Tiempo transcurrido:     00:00:15.19
+Tiempo de CPU:         00:00:00.14
