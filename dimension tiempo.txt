@@ -1,0 +1,302 @@
+CREATE TABLE tiempo
+    ( 
+     id_tiempo VARCHAR2 (40) , 
+     fecha DATE , 
+     dia VARCHAR2 (40) , 
+     mes VARCHAR2 (40) , 
+     anio VARCHAR2 (40) , 
+     trimestre VARCHAR2(2) , 
+     semestre VARCHAR2 (2)
+    ) 
+;
+
+create or replace
+procedure llenado_d_tiempo as
+
+tiempo_id tiempo.id_tiempo%type;
+tiempo_fecha date;
+tiempo_dia tiempo.dia%type;
+tiempo_mes tiempo.mes%type;
+tiempo_anio tiempo.anio%type;
+tiempo_trimestre tiempo.trimestre%type;
+tiempo_semestre tiempo.semestre%type;
+ciclo integer;
+fecha1 date;
+bandera integer;
+contador integer;
+jef_ini date;
+jef_fin date;
+sifcc_fe_update date;
+his_items_ini date;
+his_items_fin date;
+form_ini date;
+form_fin date;
+
+
+cursor jefes is (select to_date(j.jef_fecha_fin,'dd/mm/yy') fecha_fin,
+to_date(j.jef_fecha_ini,'dd/mm/yy') fecha_ini from sds_jefe_jef j);
+
+--cursor localidades is (select distinct ctr_ano_fiscal from sds_localidades_lcd);
+
+cursor centro_costos is (select distinct ctr_fecha_update from sif_centro_costos);
+
+--cursor adminis is (select distinct infa_ctr_ano_fiscal from sds_adminis_ad);
+
+cursor historico_items is (select his_fecha_inicio, his_fecha_fin from sds_historico_items_his);
+
+cursor formatos is (select fmo_fecha, jef_fecha_ini from sds_formatos_fmo);
+
+
+begin
+-------------------------------------------
+open jefes;
+loop
+fetch jefes into jef_fin, jef_ini;
+exit when jefes%notfound;
+
+for ciclo in 1..2 loop
+  bandera:=0;
+  contador:=0;
+  
+  if ciclo = 1 then
+    fecha1 := jef_ini;
+  end if;
+ 
+  if ciclo = 2 then
+    fecha1 := jef_fin;
+  end if;
+  
+  select count(tabla.con)
+  into bandera
+  from (select ti.id_tiempo con from tiempo ti
+  where to_char(ti.fecha,'dd/mm/yy')= to_char(fecha1,'dd/mm/yy')) tabla;
+
+  if bandera = 0 then
+  
+    select count(tabla.con)
+    into contador
+    from (select ti.fecha con from tiempo ti) tabla;
+    
+    contador := contador+1;
+    tiempo_anio := to_char(fecha1,'yyyy');
+    tiempo_dia := to_char(fecha1, 'day');
+    tiempo_mes := to_char(fecha1, 'month');
+    
+    if to_number(to_char(fecha1, 'mm')) <= 6  then
+      tiempo_semestre:=1;
+    end if;
+    
+    if to_number(to_char(fecha1, 'mm')) > 6  then
+      tiempo_semestre:=2;
+    end if;
+    
+    if to_number(to_char(fecha1, 'mm')) <= 3  then
+      tiempo_trimestre:=1;
+    end if;
+    
+    if to_number(to_char(fecha1, 'mm')) > 3 and to_number(to_char(fecha1, 'mm')) < 7 then
+      tiempo_trimestre:=2;
+    end if;
+    
+    if to_number(to_char(fecha1, 'mm')) > 6 and to_number(to_char(fecha1, 'mm')) < 10 then
+      tiempo_trimestre:=3;
+    end if;
+    
+    if to_number(to_char(fecha1, 'mm')) > 9  and to_number(to_char(fecha1, 'mm')) < 13 then
+      tiempo_trimestre:=4;
+    end if;
+   
+      insert into tiempo values (contador,fecha1,tiempo_dia,tiempo_mes,tiempo_anio,tiempo_trimestre,tiempo_semestre);
+    
+ end if;
+ end loop; -- Ciclo
+ end loop;
+ close jefes;
+ ---------------------------------------------------------------------------------------------------------------
+open centro_costos;
+loop
+  fetch centro_costos into sifcc_fe_update;
+  exit when centro_costos%notfound;
+
+  fecha1 := sifcc_fe_update ;
+  
+  select count(tabla.con)
+  into bandera
+  from (select ti.id_tiempo con from tiempo ti
+  where to_char(ti.fecha,'dd/mm/yy')= to_char(fecha1,'dd/mm/yy')) tabla;
+
+  if bandera = 0 then
+  
+    select count(tabla.con)
+    into contador
+    from (select ti.fecha con from tiempo ti) tabla;
+    
+    contador := contador+1;
+    tiempo_anio := to_char(fecha1,'yyyy');
+    tiempo_dia := to_char(fecha1, 'day');
+    tiempo_mes := to_char(fecha1, 'month');
+    
+    if to_number(to_char(fecha1, 'mm')) <= 6  then
+      tiempo_semestre:=1;
+    end if;
+    
+    if to_number(to_char(fecha1, 'mm')) > 6  then
+      tiempo_semestre:=2;
+    end if;
+    
+    if to_number(to_char(fecha1, 'mm')) <= 3  then
+      tiempo_trimestre:=1;
+    end if;
+    
+    if to_number(to_char(fecha1, 'mm')) > 3 and to_number(to_char(fecha1, 'mm')) < 7 then
+      tiempo_trimestre:=2;
+    end if;
+    
+    if to_number(to_char(fecha1, 'mm')) > 6 and to_number(to_char(fecha1, 'mm')) < 10 then
+      tiempo_trimestre:=3;
+    end if;
+    
+    if to_number(to_char(fecha1, 'mm')) > 9  and to_number(to_char(fecha1, 'mm')) < 13 then
+      tiempo_trimestre:=4;
+    end if;
+    
+    insert into tiempo values (contador,fecha1,tiempo_dia,tiempo_mes,tiempo_anio,tiempo_trimestre,tiempo_semestre);
+ 
+ end if;
+ end loop;
+ close centro_costos;
+ 
+ ------------------------------------------------------------------------------------------------------------------
+open historico_items;
+loop
+fetch historico_items into his_items_ini, his_items_fin;
+exit when historico_items%notfound;
+
+for ciclo in 1..2 loop
+  bandera:=0;
+  contador:=0;
+  
+  if ciclo = 1 then
+    fecha1 := his_items_ini;
+  end if;
+ 
+  if ciclo = 2 then
+    fecha1 := his_items_fin;
+  end if;
+  
+  select count(tabla.con)
+  into bandera
+  from (select ti.id_tiempo con from tiempo ti
+  where to_char(ti.fecha,'dd/mm/yy')= to_char(fecha1,'dd/mm/yy')) tabla;
+
+  if bandera = 0 then
+  
+    select count(tabla.con)
+    into contador
+    from (select ti.fecha con from tiempo ti) tabla;
+    --dbms_output.put_line(fecha1||'eso');
+  if fecha1!=null then  
+    contador := contador+1;
+    tiempo_anio := to_char(fecha1,'yyyy');
+    tiempo_dia := to_char(fecha1, 'day');
+    tiempo_mes := to_char(fecha1, 'month');
+    
+    if to_number(to_char(fecha1, 'mm')) <= 6  then
+      tiempo_semestre:=1;
+    end if;
+    
+    if to_number(to_char(fecha1, 'mm')) > 6  then
+      tiempo_semestre:=2;
+    end if;
+    
+    if to_number(to_char(fecha1, 'mm')) <= 3  then
+      tiempo_trimestre:=1;
+    end if;
+    
+    if to_number(to_char(fecha1, 'mm')) > 3 and to_number(to_char(fecha1, 'mm')) < 7 then
+      tiempo_trimestre:=2;
+    end if;
+    
+    if to_number(to_char(fecha1, 'mm')) > 6 and to_number(to_char(fecha1, 'mm')) < 10 then
+      tiempo_trimestre:=3;
+    end if;
+    
+    if to_number(to_char(fecha1, 'mm')) > 9  and to_number(to_char(fecha1, 'mm')) < 13 then
+      tiempo_trimestre:=4;
+    end if;
+    
+    
+      insert into tiempo values (contador,fecha1,tiempo_dia,tiempo_mes,tiempo_anio,tiempo_trimestre,tiempo_semestre);
+    end if;
+    
+ end if;
+ end loop; -- Ciclo
+ end loop;
+ close historico_items;
+
+-----------------------------------------------------------------------------------------------------------------------------------
+open formatos;
+loop
+fetch formatos into form_ini,form_fin;
+exit when formatos%notfound;
+
+for ciclo in 1..2 loop
+  bandera:=0;
+  contador:=0;
+  
+  if ciclo = 1 then
+    fecha1 := form_ini;
+  end if;
+ 
+  if ciclo = 2 then
+    fecha1 := form_fin;
+  end if;
+  
+  select count(tabla.con)
+  into bandera
+  from (select ti.id_tiempo con from tiempo ti
+  where to_char(ti.fecha,'dd/mm/yy')= to_char(fecha1,'dd/mm/yy')) tabla;
+
+  if bandera = 0 then
+  
+    select count(tabla.con)
+    into contador
+    from (select ti.fecha con from tiempo ti) tabla;
+    
+    contador := contador+1;
+    tiempo_anio := to_char(fecha1,'yyyy');
+    tiempo_dia := to_char(fecha1, 'day');
+    tiempo_mes := to_char(fecha1, 'month');
+    
+    if to_number(to_char(fecha1, 'mm')) <= 6  then
+      tiempo_semestre:=1;
+    end if;
+    
+    if to_number(to_char(fecha1, 'mm')) > 6  then
+      tiempo_semestre:=2;
+    end if;
+    
+    if to_number(to_char(fecha1, 'mm')) <= 3  then
+      tiempo_trimestre:=1;
+    end if;
+    
+    if to_number(to_char(fecha1, 'mm')) > 3 and to_number(to_char(fecha1, 'mm')) < 7 then
+      tiempo_trimestre:=2;
+    end if;
+    
+    if to_number(to_char(fecha1, 'mm')) > 6 and to_number(to_char(fecha1, 'mm')) < 10 then
+      tiempo_trimestre:=3;
+    end if;
+    
+    if to_number(to_char(fecha1, 'mm')) > 9  and to_number(to_char(fecha1, 'mm')) < 13 then
+      tiempo_trimestre:=4;
+    end if;
+   --dbms_output.put_line(fecha1||'eso');
+      insert into tiempo values (contador,fecha1,tiempo_dia,tiempo_mes,tiempo_anio,tiempo_trimestre,tiempo_semestre);
+    
+ end if;
+ end loop; -- Ciclo
+ end loop;
+ close formatos;
+ 
+ end;
