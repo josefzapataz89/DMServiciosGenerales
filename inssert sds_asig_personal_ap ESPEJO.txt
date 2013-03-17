@@ -1,0 +1,22 @@
+--cargar de ultima despues de cargar sds_asig_personal_apl
+
+create or replace
+procedure espejo is
+
+cod4 varchar2(40);
+cursor cod is (select * from sds_asig_personal_apl);
+cod2 sds_asig_personal_apl%rowtype;
+  begin 
+  open cod;
+    loop
+      fetch cod into cod2;
+      cod4 := replace(cod2.fmo_codigo,'.','');
+      EXIT WHEN cod%NOTFOUND;
+      dbms_output.put_line('nuevo:' || cod4 ||' '|| cod2.svo_codigo  ||' '|| ' '||cod2.SVO_CODIGO ||' '|| ' '||cod2.INFA_NACIONALIDAD ||' '|| ' '||cod2.INFA_CEDULA ||' '|| ' '||cod2.INFA_PERN_TIPN_CODIGO ||' '|| ' '||cod2.APL_PERSONALSUGERIDO ||' '|| ' '||cod2.APL_PERSONALUSADO);
+      insert into sds_asig_personal_ap(FMO_CODIGO,SVO_CODIGO,INFA_NACIONALIDAD,INFA_CEDULA,INFA_PERN_TIPN_CODIGO,APL_PERSONALSUGERIDO,APL_PERSONALUSADO) values (cod4,cod2.SVO_CODIGO,cod2.INFA_NACIONALIDAD,cod2.INFA_CEDULA,cod2.INFA_PERN_TIPN_CODIGO,cod2.APL_PERSONALSUGERIDO,cod2.APL_PERSONALUSADO);
+    end loop;
+  close cod;
+end;
+
+--para llamarla
+--execuete espejo
