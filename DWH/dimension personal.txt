@@ -1,0 +1,51 @@
+
+CREATE TABLE personal
+    ( 
+     id_personal VARCHAR2 (40) ,
+     infa_cedula VARCHAR(40) ,
+     nombre VARCHAR2 (40) , 
+     apellido VARCHAR2 (40) 
+    ) 
+;
+
+
+----------------------------------------------------------------------------------------
+
+create or replace
+procedure llenado_d_personal as
+
+inf_c sds_asig_personal_apl.infa_cedula%type;
+nom sds_personas_per.nombre%type;
+ape sds_personas_per.apellido%type;
+bandera number;
+contador number:=0;
+
+cursor personas is (select distinct ap.infa_cedula, per.nombre, per.apellido from sds_personas_per per join sds_asig_personal_apl ap on (per.cedula = ap.infa_cedula));
+
+begin
+open personas;
+loop
+fetch personas into inf_c, nom, ape;
+exit when personas%notfound;
+
+bandera :=0;
+
+ 
+ select count(tabla.con)
+ into bandera
+ from(select apellido as con from personal where infa_cedula = inf_c)tabla;
+ 
+  if bandera = 0 then
+
+
+ select count(tabla.con)
+ into bandera
+ from(select apellido as con from personal where infa_cedula = inf_c)tabla;
+ contador:=contador+1;
+ 
+ insert into personal values (contador, inf_c, nom,ape);
+
+end if;
+end loop;
+close personas;
+end llenado_d_personal;

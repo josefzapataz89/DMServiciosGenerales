@@ -30,13 +30,14 @@ join sif_centro_costos cc
 on (cc.ctr_id_centro = lcd.ctr_id_centro));
 
 begin
+contador2:=0;
 open localidades;
 loop
 fetch localidades into lcd_c,edo_c,ctr_ic,lcd_n, edo_n,ctr_d;
 exit when localidades%notfound;
 
 bandera :=0;
-contador2:=0;
+
  dbms_output.put(bandera);
 select count(tabla.con)
  into bandera

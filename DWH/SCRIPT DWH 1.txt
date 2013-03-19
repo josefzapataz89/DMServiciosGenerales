@@ -91,10 +91,10 @@ CREATE TABLE Localidades
     ( 
      ID_Localidades INTEGER  NOT NULL , 
      LCD_Codigo VARCHAR2 (50) , 
-     LCD_Nombre VARCHAR2 (50) , 
      EDO_Codigo VARCHAR2 (50) , 
-     EDO_Nombre VARCHAR2 (50) , 
      CTR_Id_Centro VARCHAR2 (50) , 
+     LCD_Nombre VARCHAR2 (50) , 
+     EDO_Nombre VARCHAR2 (50) , 
      CTR_Descripcion VARCHAR2 (50) 
     ) 
 ;
@@ -109,10 +109,9 @@ CREATE TABLE Materiales
     ( 
      ID_Materiales INTEGER  NOT NULL , 
      MTL_Codigo VARCHAR2 (50) , 
+     TML_Codigo VARCHAR2 (50) , 
      MTL_Nombre VARCHAR2 (50) , 
-     TML_Nombre VARCHAR2 (50) , 
-     AML_CantidadEstimada VARCHAR2 (50) , 
-     AML_CantidadUsada VARCHAR2 (50) 
+     TML_Nombre VARCHAR2 (50) 
     ) 
 ;
 
@@ -141,11 +140,11 @@ CREATE TABLE Solicitud
     ( 
      ID_Solicitud INTEGER  NOT NULL , 
      SVO_Codigo VARCHAR2 (50) , 
-     SVO_Nombre VARCHAR2 (50) , 
-     TSO_Nombre VARCHAR2 (50) , 
      ETU_Codigo VARCHAR2 (50) , 
+     TSO_Codigo VARCHAR2 (50) , 
+     SVO_Nombre VARCHAR2 (50) , 
      ETU_Nombre VARCHAR2 (50) , 
-     FMO_Codigo VARCHAR2 (50) 
+     TSO_Nombre VARCHAR2 (50) 
     ) 
 ;
 
@@ -161,7 +160,7 @@ CREATE TABLE Tiempo
      Fecha DATE , 
      Dia VARCHAR2 (50) , 
      Mes VARCHAR2 (50) , 
-     Año VARCHAR2 (50) , 
+     Anio VARCHAR2 (50) , 
      Trimestre VARCHAR2 (50) , 
      Semestre VARCHAR2 (50) 
     ) 
