@@ -1,0 +1,17 @@
+CREATE TABLE materiales
+(
+	IDMATERIALES VARCHAR (40);
+	CODIGO_LCD VARCHAR (40);
+	NOMBRE_LCD VARCHAR (40),
+	CODIGO_EDO VARCHAR (40),
+	NOMBRE_EDO VARCHAR (40),
+	CODIGO_CTR VARCHAR (40),
+	NOMBRE_CTR VARCHAR (40)
+);
+
+SELECT DISTINCT(lcd.LCD_CODIGO) LCD_C, lcd.LCD_NOMBRE LCD_N, edo.EDO_CODIGO EDO_C, edo.EDO_NOMBRE EDO_N, ctr.CTR_ID_CENTRO CTR_C, ctr.CTR_DESCRIPCION CTR_N
+  FROM sif_centro_costos ctr JOIN sds_localidades_lcd lcd 
+  ON ( ctr.ctr_id_centro = lcd.ctr_id_centro ) 
+  JOIN sds_edificios_edo edo
+  ON ( lcd.edo_codigo = edo.edo_codigo )
+  ORDER BY lcd.LCD_CODIGO;

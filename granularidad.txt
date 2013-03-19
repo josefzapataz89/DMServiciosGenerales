@@ -1,0 +1,43 @@
+materiales SDS_MATERIALES_MTL
+
+- MTL_CODIGO: es la clave primaria de la tabla, representa a un unico material.
+- TML_CODIGO: esta relacionado con la tabla "SDS_TIPO_MATERIALES_TML", me indica el tipo de material al que pertenece.
+- MTL_NOMBRE: es el nombre del material.
+- MTL_CANTIDAD: es la cantidad existente del material.
+
+servicios SDS_SERVICIOS_SVO
+
+- SVO_CODIGO: es la clave primaria de la tabla, representa a un unico servicio.
+- TSO_CODIGO: esta relacionada con la tabla "SDS_TIPO_SERVICIOS_TSO", indica el tipo de servicio al que pertenece.
+- SVO_NOMBRE: refleja el nombre del servicio.
+- SVO_DESCRIPCION: nos describe informacion concerniente al servicio.
+
+historico items SDS_HISTORICO_ITEMS_HIS
+
+- FMO_CODIGO: esta relacionado a la tabla "SDS_FORMATOS_FMO", indica el formato del servicio a prestar.
+- SVO_CODIGO: esta relacionado a la tabla "SDS_SERVICIOS_SVO", indica el servicio a prestar.
+- ETU_CODIGO: esta relacionado a la tabla "SDS_ESTATUS_ETU", indica el estatus del servicio.
+- HIS_FECHA_INICIO: muestra la fecha en que inicia cada estatus del servicio.
+- HIS_OBSERVACION: muestra alguna observacion realizada en el servicio.
+- HIS_FECHA_FIN: muestra la fecha en que finaliza cada estatus del servicio.
+
+asignar personal SDS_ASIG_PERSONAL_APL
+
+- FMO_CODIGO: esta relacionado con "SDS_FORMATOS_FMO", indica el formato al que fue asignado el empleado.
+- SVO_CODIGO: esta relacionado con "SDS_SERVICIOS_SVO", indica el servicio al que es asignado el empleado.
+- INFA_NACIONALIDAD: indica la nacionalidad del empleado.
+- INFA_CEDULA: indica la cedula del empleado.
+- INFA_PERN_TIPN_CODIGO: muestra el codigo del empleado 
+- APL_PERSONALSUGERIDO: indica el numero ideal de empleados a asignar para el servicio.
+- APL_PERSONALUSADO: indica el numero de empleados asignados al servicio.
+
+formatos SDS_FORMATOS_FMO
+
+- FMO_CODIGO: es la clave primaria de la tabla, referida a un unico formato.
+- JEF_INFA_PERN_TIPN_CODIGO: codigo del jefe.
+- JEF_INFA_NACIONALIDAD: muestra nacinalidad del jefe que aplico el formato.
+- JEF_INFA_CEDULA: muestra cedula del jefe que aplico el formato.
+- JEF_INFA_CTR_ID_CENTRO: muestra centro de costos al que pertenece el jefe que aplico el formato.
+- JEF_INFA_CTR_ANO_FISCAL: muestra el año fiscal del centro de costos al que pertenece el jefe que aplico el formato.
+- FMO_FECHA: fecha de aplicación del formato.
+- JEF_FECHA_INI: muestra la fecha de inicio del jefe que aplico el formato.

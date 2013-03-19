@@ -1,0 +1,42 @@
+CREATE TABLE PERSONAL
+(
+  IDPERSONA VARCHAR (40),
+  CEDULA VARCHAR (40),
+  NOMBRE VARCHAR (40),
+  APELLIDO VARCHAR (40)
+);
+
+SET SERVEROUTPUT ON;
+CREATE OR REPLACE PROCEDURE p_personal 
+IS
+  
+  id_person NUMBER;
+  bandera NUMBER;
+
+  CURSOR empleados IS
+  SELECT DISTINCT(per.cedula), per.nombre, per.apellido 
+  FROM sds_personas_per per JOIN sds_asig_personal_apl apl
+  ON per.cedula = apl.infa_cedula
+  ORDER BY per.cedula DESC;
+
+BEGIN
+  id_person := 1;
+  bandera := 0;
+  dbms_output.put_line('ID      Cedula      Nombre      Apellido');
+  dbms_output.put_line(chr(13));
+  FOR i IN empleados LOOP
+	bandera := 	SELECT COUNT(*)
+				FROM personal
+				WHERE CEDULA = i.per_cedula;
+	IF bandera = 0 THEN			
+		dbms_output.put_line(id_person||'     '||i.cedula||'    '||i.nombre||'    '||i.apellido);
+		INSERT INTO PERSONAL (IDPERSONA,CEDULA,NOMBRE,APELLIDO) VALUES (id_person,i.cedula,i.nombre,i.apellido);
+		id_person := id_person + 1;
+		bandera := 0;
+	END IF;
+  END LOOP;
+  
+END p_personal;
+/
+
+EXECUTE p_personal
