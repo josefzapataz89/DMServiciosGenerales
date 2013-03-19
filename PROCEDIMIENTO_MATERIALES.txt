@@ -1,0 +1,20 @@
+SET SERVEROUTPUT ON;
+CREATE OR REPLACE PROCEDURE materiales 
+IS
+
+CURSOR material IS
+select mtl.mtl_codigo,aml.aml_cantidadestimada,tml.tml_nombre,aml.aml_cantidadusada,mtl.mtl_cantidad, mtl.mtl_nombre
+from sds_materiales_mtl mtl JOIN sds_asig_material_aml aml
+ON (mtl.mtl_codigo=aml.mtl_codigo) JOIN sds_tipo_materiales_tml tml
+ON (tml.tml_codigo=mtl.tml_codigo)
+order by mtl.mtl_codigo;
+
+BEGIN
+
+FOR i IN material LOOP  
+  
+  INSERT INTO MATERIALES (IDMATERIALES,MTLCODIGO,MTLNOMBRE,TMLNOMBRE,AMLCANTEST,AMLCANTUSADA) VALUES (i.id_materiales,i.mtl_codigo,i.mtl_nombre,i.tml_nombre,i.aml_cantidadestimada,i.aml_cantidadusada);
+END LOOP;
+
+END materiales
+/
