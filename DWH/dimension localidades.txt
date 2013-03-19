@@ -1,0 +1,61 @@
+CREATE TABLE localidades
+    ( 
+     id_localidades VARCHAR2 (40) , 
+     lcd_codigo VARCHAR2 (40) , 
+     edo_codigo VARCHAR2 (40) , 
+     ctr_id_centro VARCHAR2 (40) , 
+     lcd_nombre VARCHAR2 (40) , 
+     edo_nombre VARCHAR2 (40) , 
+     ctr_descripcion VARCHAR2 (50)
+    ) 
+;
+
+---------------------------------------------------------------------------------
+
+create or replace
+procedure llenado_d_localidades as
+bandera number;
+contador2 number;
+lcd_c sds_localidades_lcd.lcd_codigo%type;
+lcd_n sds_localidades_lcd.lcd_nombre%type;
+edo_c sds_edificios_edo.edo_codigo%type;
+edo_n sds_edificios_edo.edo_nombre%type;
+ctr_ic sif_centro_costos.ctr_id_centro%type;
+ctr_d sif_centro_costos.ctr_descripcion%type;
+
+cursor localidades is (select distinct lcd.lcd_codigo, edo.edo_codigo, cc.ctr_id_centro,lcd.lcd_nombre, edo.edo_nombre, cc.ctr_descripcion 
+from sds_localidades_lcd lcd join sds_edificios_edo edo
+on (edo.edo_codigo = lcd.edo_codigo)
+join sif_centro_costos cc
+on (cc.ctr_id_centro = lcd.ctr_id_centro));
+
+begin
+contador2:=0;
+open localidades;
+loop
+fetch localidades into lcd_c,edo_c,ctr_ic,lcd_n, edo_n,ctr_d;
+exit when localidades%notfound;
+
+bandera :=0;
+
+ dbms_output.put(bandera);
+select count(tabla.con)
+ into bandera
+ from(select lo.lcd_codigo as con ,lo.edo_codigo,lo.ctr_id_centro from  localidades lo
+ where (lo.lcd_codigo = lcd_c) and (lo.edo_codigo = edo_c) and (lo.ctr_id_centro = ctr_ic))tabla;
+
+  if bandera = 0 then
+
+select count(tabla.con)
+ into bandera
+ from(select lo.lcd_codigo as con ,lo.edo_codigo,lo.ctr_id_centro from  localidades lo
+ where (lo.lcd_codigo = lcd_c) and (lo.edo_codigo = edo_c) and (lo.ctr_id_centro = ctr_ic))tabla;
+ 
+ contador2:=contador2+1;
+
+ insert into localidades values (contador2,lcd_c,edo_c,ctr_ic,lcd_n,edo_n,ctr_d);
+
+end if;
+end loop;
+close localidades;
+end llenado_d_localidades;

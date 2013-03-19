@@ -1,0 +1,353 @@
+CREATE TABLE Hecho1 
+    ( 
+     ID_Hecho1 INTEGER  NOT NULL , 
+     TiempoPromedioEstado VARCHAR2 (50) , 
+     CantidadObrasPersona VARCHAR2 (50) , 
+     CantidadObrasTotal VARCHAR2 (50) , 
+     CantidadSolicitudesEstado VARCHAR2 (50) , 
+     Solicitud_ID_Solicitud INTEGER  NOT NULL , 
+     Tiempo_ID_Tiempo INTEGER  NOT NULL 
+    ) 
+;
+
+
+
+ALTER TABLE Hecho1 
+    ADD CONSTRAINT Hecho1_PK PRIMARY KEY ( ID_Hecho1 ) ;
+
+
+CREATE TABLE Hecho2 
+    ( 
+     ID_Hecho2 INTEGER  NOT NULL , 
+     TiempoEntreFallas VARCHAR2 (50) , 
+     PorcentajeQueRepresentaCC VARCHAR2 (50) , 
+     FallaComunEdif VARCHAR2 (50) , 
+     TiempoAtencionRapido VARCHAR2 (50) , 
+     TiempoAtencionLargo VARCHAR2 (50) , 
+     Localidades_ID_Localidades INTEGER  NOT NULL , 
+     Tiempo_ID_Tiempo INTEGER  NOT NULL , 
+     Solicitud_ID_Solicitud INTEGER  NOT NULL 
+    ) 
+;
+
+
+
+ALTER TABLE Hecho2 
+    ADD CONSTRAINT Hecho2_PK PRIMARY KEY ( ID_Hecho2 ) ;
+
+
+CREATE TABLE Hecho3 
+    ( 
+     ID_Hecho3 INTEGER  NOT NULL , 
+     MaxMaterialUsado VARCHAR2 (50) , 
+     MinMaterialUsado VARCHAR2 (50) , 
+     Solicitud_ID_Solicitud INTEGER  NOT NULL , 
+     Materiales_ID_Materiales INTEGER  NOT NULL , 
+     Tiempo_ID_Tiempo INTEGER  NOT NULL 
+    ) 
+;
+
+
+
+ALTER TABLE Hecho3 
+    ADD CONSTRAINT Hecho3_PK PRIMARY KEY ( ID_Hecho3 ) ;
+
+
+CREATE TABLE Hecho4 
+    ( 
+     ID_Hecho4 INTEGER  NOT NULL , 
+     PorcentajeOcupacionPers VARCHAR2 (50) , 
+     CantidadProySimultaneos VARCHAR2 (50) , 
+     Solicitud_ID_Solicitud INTEGER  NOT NULL , 
+     Personal_ID_Personal INTEGER  NOT NULL , 
+     Tiempo_ID_Tiempo INTEGER  NOT NULL 
+    ) 
+;
+
+
+
+ALTER TABLE Hecho4 
+    ADD CONSTRAINT Hecho4_PK PRIMARY KEY ( ID_Hecho4 ) ;
+
+
+CREATE TABLE Hecho5 
+    ( 
+     ID_Hecho5 INTEGER  NOT NULL , 
+     TrabajosSobrepasanEstimacion VARCHAR2 (50) , 
+     Personal_ID_Personal INTEGER  NOT NULL , 
+     Solicitud_ID_Solicitud INTEGER  NOT NULL , 
+     Materiales_ID_Materiales INTEGER  NOT NULL , 
+     Tiempo_ID_Tiempo INTEGER  NOT NULL 
+    ) 
+;
+
+
+
+ALTER TABLE Hecho5 
+    ADD CONSTRAINT Hecho5_PK PRIMARY KEY ( ID_Hecho5 ) ;
+
+
+CREATE TABLE Localidades 
+    ( 
+     ID_Localidades INTEGER  NOT NULL , 
+     LCD_Codigo VARCHAR2 (50) , 
+     EDO_Codigo VARCHAR2 (50) , 
+     CTR_Id_Centro VARCHAR2 (50) , 
+     LCD_Nombre VARCHAR2 (50) , 
+     EDO_Nombre VARCHAR2 (50) , 
+     CTR_Descripcion VARCHAR2 (50) 
+    ) 
+;
+
+
+
+ALTER TABLE Localidades 
+    ADD CONSTRAINT Localidades_PK PRIMARY KEY ( ID_Localidades ) ;
+
+
+CREATE TABLE Materiales 
+    ( 
+     ID_Materiales INTEGER  NOT NULL , 
+     MTL_Codigo VARCHAR2 (50) , 
+     TML_Codigo VARCHAR2 (50) , 
+     MTL_Nombre VARCHAR2 (50) , 
+     TML_Nombre VARCHAR2 (50) 
+    ) 
+;
+
+
+
+ALTER TABLE Materiales 
+    ADD CONSTRAINT Materiales_PK PRIMARY KEY ( ID_Materiales ) ;
+
+
+CREATE TABLE Personal 
+    ( 
+     ID_Personal INTEGER  NOT NULL , 
+     INFA_Cedula VARCHAR2 (50) , 
+     Nombre VARCHAR2 (50) , 
+     Apellido VARCHAR2 (50) 
+    ) 
+;
+
+
+
+ALTER TABLE Personal 
+    ADD CONSTRAINT Personal_PK PRIMARY KEY ( ID_Personal ) ;
+
+
+CREATE TABLE Solicitud 
+    ( 
+     ID_Solicitud INTEGER  NOT NULL , 
+     SVO_Codigo VARCHAR2 (50) , 
+     ETU_Codigo VARCHAR2 (50) , 
+     TSO_Codigo VARCHAR2 (50) , 
+     SVO_Nombre VARCHAR2 (50) , 
+     ETU_Nombre VARCHAR2 (50) , 
+     TSO_Nombre VARCHAR2 (50) 
+    ) 
+;
+
+
+
+ALTER TABLE Solicitud 
+    ADD CONSTRAINT Solicitud_PK PRIMARY KEY ( ID_Solicitud ) ;
+
+
+CREATE TABLE Tiempo 
+    ( 
+     ID_Tiempo INTEGER  NOT NULL , 
+     Fecha DATE , 
+     Dia VARCHAR2 (50) , 
+     Mes VARCHAR2 (50) , 
+     Anio VARCHAR2 (50) , 
+     Trimestre VARCHAR2 (50) , 
+     Semestre VARCHAR2 (50) 
+    ) 
+;
+
+
+
+ALTER TABLE Tiempo 
+    ADD CONSTRAINT Tiempo_PK PRIMARY KEY ( ID_Tiempo ) ;
+
+
+
+ALTER TABLE Hecho1 
+    ADD CONSTRAINT Hecho1_Solicitud_FK FOREIGN KEY 
+    ( 
+     Solicitud_ID_Solicitud
+    ) 
+    REFERENCES Solicitud 
+    ( 
+     ID_Solicitud
+    ) 
+;
+
+
+ALTER TABLE Hecho1 
+    ADD CONSTRAINT Hecho1_Tiempo_FK FOREIGN KEY 
+    ( 
+     Tiempo_ID_Tiempo
+    ) 
+    REFERENCES Tiempo 
+    ( 
+     ID_Tiempo
+    ) 
+;
+
+
+ALTER TABLE Hecho2 
+    ADD CONSTRAINT Hecho2_Localidades_FK FOREIGN KEY 
+    ( 
+     Localidades_ID_Localidades
+    ) 
+    REFERENCES Localidades 
+    ( 
+     ID_Localidades
+    ) 
+;
+
+
+ALTER TABLE Hecho2 
+    ADD CONSTRAINT Hecho2_Solicitud_FK FOREIGN KEY 
+    ( 
+     Solicitud_ID_Solicitud
+    ) 
+    REFERENCES Solicitud 
+    ( 
+     ID_Solicitud
+    ) 
+;
+
+
+ALTER TABLE Hecho2 
+    ADD CONSTRAINT Hecho2_Tiempo_FK FOREIGN KEY 
+    ( 
+     Tiempo_ID_Tiempo
+    ) 
+    REFERENCES Tiempo 
+    ( 
+     ID_Tiempo
+    ) 
+;
+
+
+ALTER TABLE Hecho3 
+    ADD CONSTRAINT Hecho3_Materiales_FK FOREIGN KEY 
+    ( 
+     Materiales_ID_Materiales
+    ) 
+    REFERENCES Materiales 
+    ( 
+     ID_Materiales
+    ) 
+;
+
+
+ALTER TABLE Hecho3 
+    ADD CONSTRAINT Hecho3_Solicitud_FK FOREIGN KEY 
+    ( 
+     Solicitud_ID_Solicitud
+    ) 
+    REFERENCES Solicitud 
+    ( 
+     ID_Solicitud
+    ) 
+;
+
+
+ALTER TABLE Hecho3 
+    ADD CONSTRAINT Hecho3_Tiempo_FK FOREIGN KEY 
+    ( 
+     Tiempo_ID_Tiempo
+    ) 
+    REFERENCES Tiempo 
+    ( 
+     ID_Tiempo
+    ) 
+;
+
+
+ALTER TABLE Hecho4 
+    ADD CONSTRAINT Hecho4_Personal_FK FOREIGN KEY 
+    ( 
+     Personal_ID_Personal
+    ) 
+    REFERENCES Personal 
+    ( 
+     ID_Personal
+    ) 
+;
+
+
+ALTER TABLE Hecho4 
+    ADD CONSTRAINT Hecho4_Solicitud_FK FOREIGN KEY 
+    ( 
+     Solicitud_ID_Solicitud
+    ) 
+    REFERENCES Solicitud 
+    ( 
+     ID_Solicitud
+    ) 
+;
+
+
+ALTER TABLE Hecho4 
+    ADD CONSTRAINT Hecho4_Tiempo_FK FOREIGN KEY 
+    ( 
+     Tiempo_ID_Tiempo
+    ) 
+    REFERENCES Tiempo 
+    ( 
+     ID_Tiempo
+    ) 
+;
+
+
+ALTER TABLE Hecho5 
+    ADD CONSTRAINT Hecho5_Materiales_FK FOREIGN KEY 
+    ( 
+     Materiales_ID_Materiales
+    ) 
+    REFERENCES Materiales 
+    ( 
+     ID_Materiales
+    ) 
+;
+
+
+ALTER TABLE Hecho5 
+    ADD CONSTRAINT Hecho5_Personal_FK FOREIGN KEY 
+    ( 
+     Personal_ID_Personal
+    ) 
+    REFERENCES Personal 
+    ( 
+     ID_Personal
+    ) 
+;
+
+
+ALTER TABLE Hecho5 
+    ADD CONSTRAINT Hecho5_Solicitud_FK FOREIGN KEY 
+    ( 
+     Solicitud_ID_Solicitud
+    ) 
+    REFERENCES Solicitud 
+    ( 
+     ID_Solicitud
+    ) 
+;
+
+
+ALTER TABLE Hecho5 
+    ADD CONSTRAINT Hecho5_Tiempo_FK FOREIGN KEY 
+    ( 
+     Tiempo_ID_Tiempo
+    ) 
+    REFERENCES Tiempo 
+    ( 
+     ID_Tiempo
+    ) 
+;

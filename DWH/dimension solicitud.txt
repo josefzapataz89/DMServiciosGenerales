@@ -1,0 +1,65 @@
+CREATE TABLE solicitud
+    ( 
+     id_solicitud VARCHAR2 (40) , 
+     svo_codigo VARCHAR2 (40) , 
+     etu_codigo VARCHAR2 (40) , 
+     tso_codigo VARCHAR2 (40) , 
+     svo_nombre VARCHAR2 (40) , 
+     etu_nombre VARCHAR2 (40) , 
+     tso_nombre VARCHAR2 (40)
+    ) 
+;
+
+------------------------------------------------------------------------------------
+create or replace
+procedure llenado_d_solicitud as
+
+svo_c sds_servicios_svo.svo_codigo%type;
+etu_c sds_estatus_etu.etu_codigo%type;
+tso_c sds_tipo_servicios_tso.tso_codigo%type;
+tso_n sds_tipo_servicios_tso.tso_nombre%type;
+svo_n sds_servicios_svo.svo_nombre%type;
+fmo_c sds_formatos_fmo.fmo_codigo%type;
+etu_n sds_estatus_etu.etu_nombre%type;
+bandera number;
+contador number:=0;
+
+cursor servicios is (select distinct svo.svo_codigo, etu.etu_codigo, tso.tso_codigo,fmo.fmo_codigo, svo.svo_nombre,etu.etu_nombre,tso.tso_nombre 
+from sds_servicios_svo svo join sds_tipo_servicios_tso tso 
+on(svo.tso_codigo=tso.tso_codigo)
+join sds_historico_items_his his
+on (his.svo_codigo = svo.svo_codigo)
+join sds_estatus_etu etu
+on (etu.etu_codigo = his.etu_codigo)
+join sds_formatos_fmo fmo
+on (fmo.fmo_codigo = his.fmo_codigo));
+
+begin
+open servicios;
+loop
+fetch servicios into svo_c, etu_c, tso_c,fmo_c, svo_n,etu_n,tso_n;
+exit when servicios%notfound;
+
+bandera :=0;
+--contador;
+ 
+ select count(tabla.con)
+ into bandera
+ from(select so.svo_codigo as con ,so.etu_codigo,so.tso_codigo from  solicitud so
+ where (so.svo_codigo = svo_c) and (so.etu_codigo = etu_c) and (so.tso_codigo = tso_c))tabla;
+ 
+  if bandera = 0 then
+
+  select count(tabla.con)
+ into bandera
+ from(select so.svo_codigo con ,so.etu_codigo, so.tso_codigo from  solicitud so
+ where so.svo_codigo = svo_c and so.etu_codigo = etu_c and so.tso_codigo = tso_c)tabla;
+ 
+ contador:=contador+1;
+ 
+ insert into solicitud values (contador, svo_c, etu_c, tso_c, fmo_c , svo_n, etu_n,tso_n);
+
+end if;
+end loop;
+close servicios;
+end llenado_d_solicitud;

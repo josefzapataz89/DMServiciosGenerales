@@ -1,0 +1,53 @@
+CREATE TABLE materiales
+    ( 
+     id_materiales VARCHAR2 (40) , 
+     mtl_codigo VARCHAR2 (40) , 
+     tml_codigo VARCHAR2 (40) , 
+     mtl_nombre VARCHAR2 (50) , 
+     tml_nombre VARCHAR2 (50) 
+    ) 
+;
+
+--------------------------------------------------------------------------------------
+create or replace
+procedure llenado_d_materiales as
+
+mtl_c sds_materiales_mtl.mtl_codigo%type;
+mtl_n sds_materiales_mtl.mtl_nombre%type;
+tml_c sds_tipo_materiales_tml.tml_codigo%type;
+tml_n sds_tipo_materiales_tml.tml_nombre%type;
+bandera number;
+contador number:=0;
+
+cursor material is (select distinct  mtl.mtl_codigo,tml.tml_codigo, mtl.mtl_nombre,tml.tml_nombre from sds_materiales_mtl mtl join sds_tipo_materiales_tml tml
+on(tml.tml_codigo = mtl.mtl_codigo));
+
+begin
+open material;
+loop
+fetch material into mtl_c, tml_c, mtl_n,tml_n;
+exit when material%notfound;
+
+bandera :=0;
+
+ 
+ select count(tabla.con)
+ into bandera
+ from(select tml_nombre as con from materiales 
+ where mtl_codigo = mtl_c and tml_codigo = tml_c)tabla;
+ 
+  if bandera = 0 then
+
+
+ select count(tabla.con)
+ into bandera
+ from(select tml_nombre as con from materiales 
+ where mtl_codigo = mtl_c and tml_codigo = tml_c)tabla;
+ contador:=contador+1;
+ 
+ insert into materiales values (contador, mtl_c,tml_c,mtl_n,tml_n);
+
+end if;
+end loop;
+close material;
+end llenado_d_materiales;
