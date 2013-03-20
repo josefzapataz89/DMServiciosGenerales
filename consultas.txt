@@ -1,0 +1,123 @@
+https://github.com/josefzapataz89/DMServiciosGenerales.git
+
+
+
+HECHO1
+1)tiempo promedio que una solicitud pasa en un estado:
+
+select avg(hecho1.tiempopromedioestado)
+from hecho1 join solicitud 
+on( hecho1.solicitud_id_solicitud = solicitud.id_solicitud)
+join tiempo 
+on(tiempo.id_tiempo = hecho1.tiempo_id_tiempo)
+join estado 
+on (estado.id_estado = hecho1.id_estado);
+
+9)mensualemente cuantas es la cantidad de solicitudes atendidas rechazadas y en espera
+
+select hecho1.nombre_estado, tipo
+case when estado.nombre_estado ='atendidas' then count(estado.id_estado) as uno
+      when   estado.nombre_estado ='rechazadas' then count(estado.id_estado) as dos
+      when   estado.nombre_estado ='en_espera' then count(estado.id_estado) as tres
+      else 'f' end "tipo"
+from hecho1 join tipo_servicios 
+on( hecho1.id_tipo_servicio = tipo_servicios.id_tipo)
+join tiempo 
+on(tiempo.id_tiempo = hecho1.tiempo_id_tiempo)
+join estado 
+on (estado.id_estado = hecho1.id_estado)
+
+HECHO2
+6)porcentaje que representa cada centro de costo en los servicios generales
+
+select hecho2.ctr_descripcion, avg(hecho2.ctr_id_centro)  
+from hecho2  join localidades
+on(localidades.id_localidades = hecho2.localidades_id_localidades)
+join tiempo
+on(tiempo.id_tiempo = hecho2.tiempo_id_tiempo)
+group by hecho2.ctr_descripcion;
+
+10)fallas mas comunes que se encuentran en los edificios
+
+select max(count(hecho2.fallacomunedif))  
+from hecho2  join edificios
+on(edificios.id_edificio = hecho2.edificios_id_edificio)
+join tiempo
+on(tiempo.id_tiempo = hecho2.tiempo_id_tiempo)
+group by hecho2.edificios_id_edificio
+
+11)centro de costo que fue atendido mas rapido y mas lento
+
+select hecho2.ctr_descripcion,  max(count(hecho2.tiempo_atencion))  
+from hecho2  join edificios
+on(edificios.id_edificio = hecho2.edificios_id_edificio)
+join tiempo
+on(tiempo.id_tiempo = hecho2.tiempo_id_tiempo)
+group by hecho2.edificios_id_edificio
+group by hecho2.ctr_descripcion
+
+select hecho2.ctr_descripcion,  min(count(hecho2.tiempo_atencion))  
+from hecho2  join edificios
+on(edificios.id_edificio = hecho2.edificios_id_edificio)
+join tiempo
+on(tiempo.id_tiempo = hecho2.tiempo_id_tiempo)
+group by hecho2.edificios_id_edificio
+group by hecho2.ctr_descripcion
+
+HECHO3
+
+3) maximos y minimos de materiales usados
+select materiales.tso_nombre,  max(count(hecho3.material_usado))  
+from hecho3  join materiales
+on(edificios.id_edificio = hecho3.edificios_id_edificio)
+join tiempo
+on(tiempo.id_tiempo = hecho3.tiempo_id_tiempo)
+group by materiales.tso_nombre
+
+select materiales.tso_nombre,  min(count(hecho2.material_usado))  
+from hecho2  join materiales
+on(edificios.id_edificio = hecho2.edificios_id_edificio)
+join tiempo
+on(tiempo.id_tiempo = hecho2.tiempo_id_tiempo)
+group by materiales.tso_nombre
+
+HECHO4
+4) porcentaje de ocupacion del personal de servicios generales
+
+select personal.id_personal,  avg(hecho4.porcentaje_ocupacion)  
+from hecho4  join solicitudes
+on(solicitud.id_solicitud = hecho4.solicitud_id_solicitud)
+join tiempo
+on(tiempo.id_tiempo = hecho2.tiempo)
+join personal
+on(personal.id_personal = hecho4.personal_id_personal)
+group by personal.id_personal
+
+2)perfil de los trabajadores de servivicios generales
+
+select personal.nombre, hecho4.cantidad_servicio
+from hecho4  join solicitud
+on(solicitud.id_solicitud = hecho4.solicitud_id_solicitud)
+join tiempo
+on(tiempo.id_tiempo = hecho2.tiempo)
+join personal
+on(personal.id_personal = hecho4.personal_id_personal)
+join materiales
+on(edificios.id_edificio = hecho2.edificios_id_edificio)
+group by personal.id_personal, solicitud.tipo_servicio 
+
+hECHO5
+8)trabaj que sobrepasen su estimacion en materiales y mano de obra
+
+select solicitud.svo_nombre  
+from hecho4  join solicitudes
+on(solicitud.id_solicitud = hecho4.solicitud_id_solicitud)
+join tiempo
+on(tiempo.id_tiempo = hecho2.tiempo)
+join personal
+on(personal.id_personal = hecho4.personal_id_personal)
+join materiales
+on(edificios.id_edificio = hecho2.edificios_id_edificio)
+group by personal.id_personal
+
+
